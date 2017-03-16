@@ -1,0 +1,22 @@
+<header>
+	<ul>
+		<li class="header-item header-item-left"><a href="/"><i class="fa fa-home" aria-hidden="true"></i></a></li>
+		<% if (typeof(session.user) != "undefined") { %>
+		<li class="header-item header-item-middle">
+			<input class="search-bar" type="text" name="search-tag" placeholder="Search tag">
+		</li>
+		<li class="header-item header-item-right">
+			<a class="header-button" href="/profil/<%= session.user.login%>"><i class="fa fa-user" aria-hidden="true"></i></a>
+			<ul id="header-selector">
+				<li class="header-selector-main"><a href="#"><i class="fa fa-chevron-down" aria-hidden="true"></i></a>
+					<ul>
+						<li class="header-selector-item"><a class="header-label" href="/edit_profil/<%= session.user.login%>">Settings</a></li>
+						<li class="header-selector-item"><a class="header-button" href="/logout">Log out</a></li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+		<% } %>
+	</ul>
+
+</header>

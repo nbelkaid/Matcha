@@ -1,0 +1,21 @@
+<div>
+	<form method="post">
+		<input type="hidden" name="type" value="2">
+		<div class="orient btn-outline-group orient" style="display: block;" data-toggle="buttons">
+            <label class="btn btn-primary">
+            <input type="radio" name="orient" value="Heterosexuel" />Heterosexuel</label>
+            <label class="btn btn-primary">
+            <input type="radio" name="orient" value="Bisexuel" />Bisexuel</label>
+            <label class="btn btn-primary">
+            <input type="radio" name="orient" value="Gay" checked="" />Gay</label>
+        </div>
+		<label class="text_plain text-left text-primary">Username: </label><input type="text" name="u" placeholder="<%= session.user.login %>"/>
+		<label class="text_plain text-left text-primary">mail: </label><input type="mail" name="m" placeholder="<%= session.user.eemail %>"/>
+		<label class="text_plain text-left text-primary">First name: </label><input type="text" name="f_n" placeholder="<%= session.user.first_n %>"/>
+		<label class="text_plain text-left text-primary">Last name: </label><input type="text" name="l_n" placeholder="<%= session.user.last_n %>"/>
+		<label class="text_plain text-left text-primary">Phone: </label><input type="text" name="phone" placeholder="<%= session.user.phone %>" maxlength="10" />
+		<label class="text_plain text-left text-primary">Birthday: </label><input type="date" min="1910-01-01" max="2000-01-01" name="birth"/>
+		<label class="text_plain text-left text-primary">Bio: </label><input type="textarea" name="bio" placeholder="<%= session.user.bio %>" maxlength="255" />
+		<button class="btn-primary-large" type=submit>Valider</button>
+	</form>
+</div>

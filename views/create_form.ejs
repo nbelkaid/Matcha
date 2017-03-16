@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/flick/jquery-ui.css">
+    <link rel="stylesheet" href="/stylesheets/font-awesome/css/font-awesome.min.css">
+  </head>
+  <body>
+  <div class="login">
+  <% if (locals.error.lenght > 0) { %>
+    <h1><% error %><h1>
+    <% } %>
+    <form id= "create" action="/create" method="post">
+      <fieldset>
+        <h1>Create account</h1>
+        <input type="text" name="u" placeholder="Username"  />
+        <input type="password" name="p" placeholder="Password" />
+        <input type="mail" name="m" placeholder="mail" />
+        <div class="gender_box">
+        <span class="male-switch">Male</span>
+        <div class="switch-gender">
+          <input type="radio" class="switch-input" name="gender" value="male" id="male" checked>
+          <label for="male" class="switch-label switch-label-off">&nbsp;</label>
+          <input type="radio" class="switch-input" name="gender" value="female" id="female">
+          <label for="female" class="switch-label switch-label-on">&nbsp;</label>
+          <span class="switch-selection"></span>
+        </div>
+        <span class="female-switch">Female</span>
+        </div>
+        <button type="button" class="next btn btn-primary btn-block btn-large">Create</button>
+      </fieldset>
+      <fieldset>
+        <h1>Tell us more...</h1>
+          <div class="orient btn-outline-group orient" data-toggle="buttons">
+            <label class="btn btn-primary">
+              <input type="radio" name="orient" value="Heterosexuel" checked="" />Heterosexuel</label>
+              <label class="btn btn-primary active">
+              <input type="radio" name="orient" value="Bisexuel" checked="checked" aria-pressed="true" />Bisexuel</label>
+              <label class="btn btn-primary">
+              <input type="radio" name="options" value="Gay" checked="" />Gay</label>
+          </div>
+        <input type="text" name="first_n" placeholder="First name" required="required" />
+        <input type="text" name="last_n" placeholder="Last name" required="required" />
+        <input type="text" name="phone" required="required" placeholder="Phone number" />
+        <input type="date" min="1910-01-01" max="2000-01-01" name="birth" required="required" />
+        <button type="submit" class="btn btn-primary btn-block btn-large">Validate</button>
+      </fieldset>
+    </form>
+</div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script type="text/javascript" src="/javascripts/script_next.js"></script>
+  </body>
+</html>

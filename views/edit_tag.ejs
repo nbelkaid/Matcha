@@ -1,0 +1,11 @@
+<div>
+<form method="post">
+    <ul id="myTags">
+    	<input type="hidden" name="type" value="1">
+    	<% for(var i = 0; typeof(tag[i]) != "undefined"; i++) { %>
+    	<li class="tagit-choice"><div class="tagit-label"><%= tag[i]%></div></li>
+    	<% } %>
+    </ul>
+    <button class="btn-primary-large" type=submit>Valider</button>
+</form>   
+</div>

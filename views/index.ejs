@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <% include head.ejs%>
+</head>
+
+<body>
+    <% include header %>
+        <div class="login">
+            <% if (typeof(message) != "undefined") { %>
+			<p>
+				<%= message%>
+			</p>
+			<% } %>
+			<h1>Login</h1>
+			<form action="/form_access" method="post">
+				<input type="text" name="u" placeholder="Username" required="required" />
+				<input type="password" name="p" placeholder="Password" required="required" />
+				<button type="submit" class="btn btn-primary btn-block btn-large">Sign in</button>
+			</form>
+			<a href="/create"><button type="submit" class="btn btn-primary btn-block btn-large">Sign up</button></a>
+        </div>
+        <% include script.ejs%>
+</body>
+
+</html>
