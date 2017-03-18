@@ -15,6 +15,10 @@ var user = require("./Models/user.js");
 
 var app = express();
 
+
+// Underscore accesible aux views
+app.locals._ = _
+
 /*<------------ Apply to all routes ------------>*/
 function myMiddleware (req, res, next) {
   console.log("test")

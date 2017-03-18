@@ -1,7 +1,7 @@
 <div class="edit_photo">
 	<form method="POST" encType="multipart/form-data">
 		<input type="hidden" name="type" value="0">
-		<img class="edit_photo_mini" id="currentPhoto" src="/images/<%=session.user.login %>/photo_1.jpg" onerror="this.src='../images/default.png'">	
+		<img class="edit_photo_mini" id="currentPhoto" src="/images/<%=session.user.login %>/photo_1.jpg" onerror="this.src='../images/default.png'">
 		<input type="file" name="photo_1">
 <!-- 		<label><input type="radio" name="profile" value="1" <% if (prof_nbr == 1) { %> checked="checked" <% } %> >Photo de profil</label> -->
 		<img class="edit_photo_mini" id="currentPhoto" src="/images/<%=session.user.login %>/photo_2.jpg" onerror="this.src='../images/default.png'">		
@@ -16,3 +16,11 @@
 		<button type="submit" class="btn-primary"> Valider </button>
 	</form>
 </div>
+
+<% if (_.findWhere(photo, {path: "/images/"+session.user.login+"photo_1"})) { %>
+	<img class="edit_photo_mini" id="currentPhoto" src="/images/<%=session.user.login %>/photo_1.jpg">
+	
+<% } else { %>
+<% } 
+	if ()
+%>
