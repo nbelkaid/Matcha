@@ -10,6 +10,10 @@ border-width: 0px !important;
 display: none;
 }
 
+.fs-title {font-size: 20px; text-transform: uppercase;}
+.fs-subtitle {font-size: 16px;}
+.fs-corps {font-size: 13px;}
+
 .btn {
 	display: inline-block; *display: inline; *zoom: 1;
 	padding: 4px 10px 4px;
@@ -49,7 +53,7 @@ display: none;
 .btn-primary:hover, .btn-primary:active, .btn-primary.active, .btn-primary.disabled, .btn-primary[disabled] { filter: none; background-color: #4a77d4; }
 .btn-block { width: 100%; display:block; }
 
-* { -webkit-box-sizing:border-box; -moz-box-sizing:border-box; -ms-box-sizing:border-box; -o-box-sizing:border-box; box-sizing:border-box; }
+* { -webkit-box-sizing:border-box; -moz-box-sizing:border-box; -ms-box-sizing:border-box; -o-box-sizing:border-box; box-sizing:border-box; margin: 0; padding: 0;}
 
 html { width: 100%; height:100%; /*overflow:hidden;*/}
 
@@ -63,6 +67,8 @@ body {
 	background: -o-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), -o-linear-gradient(top,  rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), -o-linear-gradient(-45deg,  #670d10 0%,#092756 100%);
 	background: -ms-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), -ms-linear-gradient(top,  rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), -ms-linear-gradient(-45deg,  #670d10 0%,#092756 100%);
 	background: -webkit-radial-gradient(0% 100%, ellipse cover, rgba(104,128,138,.4) 10%,rgba(138,114,76,0) 40%), linear-gradient(to bottom,  rgba(57,173,219,.25) 0%,rgba(42,60,87,.4) 100%), linear-gradient(135deg,  #670d10 0%,#092756 100%);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3E1D6D', endColorstr='#092756',GradientType=1 );
 }
 .login { 
@@ -400,26 +406,43 @@ header #header-selector li:hover ul {
     margin: 75px auto;
 
     padding: 25px;
+
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.3)
 }
 #profile-view .profile-picture {
     position: relative;
-    display: block;
 
     left: 0;
     right: 0;
 
-    width: 80%;
+    width: 50%;
 
-    margin: 75px auto;
+    margin: 0 auto;
+}
+#profile-view .profile-picture img{
+    width: 100%;
+}
+#profile-view .profile-picture-main {
+    display: block;
+    max-height: 500px;
+    margin: 0 auto;
+    max-width: 500px;
+}
+#profile-view .profile-picture-container {
+    height: 500px;
+}
+#profile-view .profile-picture-item {
+    display: inline-block;
+}
 
-    padding: 25px;
+#profile-view .profile-info {
+    padding: 25px auto;
+    margin: 25px auto; 
+    color: rgba(255, 255, 255, 0.6);
 }
-#profile-view {
-    
-}
-#profile-view {
-    
-}
-#profile-view {
-    
+
+#profile-view .profile-info-label {
+    padding: 5px 0;
 }

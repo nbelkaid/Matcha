@@ -14,36 +14,57 @@
 	<div id="profile-view">
 		<div class="profile-picture">
 			<% if (locals.picture) { %>
-				<div class="profile-picture-main">
-					<div class="profile-picture-item">
-						<img src="<%=locals.picture[0].path%>">
-					</div>
+			<div id="myCarousel" class="carousel slide" data-ride="carousel">
+				<!-- Indicators -->
+			<% if (locals.picture.length >= 2) { %>
+				<ol class="carousel-indicators">
+					<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+				<%for(var i = 1; i < locals.picture.length; i++) { %>
+					<li data-target="#myCarousel" data-slide-to="1"></li>
+				<% } %>
+				</ol>
+			<% } %>
+				<!-- Wrapper for slides -->
+				<div class="carousel-inner" role="listbox">
+					<div class="item active"><img src="<%=locals.picture[0].path%>"></div>
+				<%for(var i = 1; i < locals.picture.length; i++) { %>
+					<div class="item active"><img src="<%=locals.picture[i].path%>"></div>
+				<% } %>
 				</div>
-				<div class="profile-picture-container">
-					<%for(var i = 1; i < locals.picture.length; i++) { %>
-					<div class="profile-picture-item">
-						<img src="<%=locals.picture[i].path%>">
-					</div>
-					<% } %>
-				</div>
+				<!-- Left and right controls -->
+			<% if (locals.picture.length >= 2) { %>
+				<a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+					<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+					<span class="sr-only">Previous</span>
+				</a>
+				<a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+					<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+					<span class="sr-only">Next</span>
+				</a>
+			<% } %>
+			</div>
+
 			<% } else { %>
-			<div class="profile-main">
-				<img src="/images/default.png">
+			<div id="myCarousel" class="carousel slide" data-ride="carousel">
+				<div class="carousel-inner" role="listbox">
+					<div class="item active"><img src="/images/default.png"></div>
+				</div>
 			</div>
 			<% } %>
 		</div>
 		<div class="profile-info">
+			<center>
 			<ul>
 			<% if (locals.profile.last_n && locals.profile.first_n) { %>
-				<li class="profile-name fs-title"><%=locals.profile.last_n%> <%=locals.profile.first%></li>
+				<li class="profile-info-label fs-title"><%=locals.profile.last_n%> <%=locals.profile.first_n%></li>
 			<% } %>
 			<% if (locals.profile.login) { %>
-				<li class="profile-login fs-subtitle"><%=locals.profile.login%></li>
+				<li class="profile-info-label fs-subtitle"><%=locals.profile.login%></li>
 			<% } %>
 			<% if (locals.profile.age) { %>
-				<li class="profile-age fs-subtitle"><%=locals.profile.age%></li>
+				<li class="profile-info-label fs-subtitle"><%=locals.profile.age%></li>
 			<% } %>
-			<% if (locals.profile.kind && locals.profile.looking_for) { %>
+			<% if (locals.profile.kind != null && locals.profile.looking_for != null) { %><!-- /!\ Default == NULL -->
 			<% if (locals.profile.kind == 0 && locals.profile.looking_for == 0) { %><li class="profile-seeking fs-subtitle">Seeking : <i class="fa fa-venus" aria-hidden="true"></i></li><% } %>
 			<% if (locals.profile.kind == 0 && locals.profile.looking_for == 1) { %><li class="profile-seeking fs-subtitle">Seeking : <i class="fa fa-venus-mars" aria-hidden="true"></i></li><% } %>
 			<% if (locals.profile.kind == 0 && locals.profile.looking_for == 2) { %><li class="profile-seeking fs-subtitle">Seeking : <i class="fa fa-mars" aria-hidden="true"></i></li><% } %>
@@ -52,10 +73,11 @@
 			<% if (locals.profile.kind == 1 && locals.profile.looking_for == 2) { %><li class="profile-seeking fs-subtitle">Seeking : <i class="fa fa-venus" aria-hidden="true"></i></li><% } %>
 			<% } %>
 			<% if (locals.profile.bio) { %>
-				<li class="profile-bio fs-corps"><%=locals.profile.bio%></li>
+				<li class="profile-info-label fs-corps"><%=locals.profile.bio%></li>
 			<% } %>
+			</center>
 			</ul>
-			<a href="/report?id=<%=locals.profile.id%>_<%=locals.session.id%>" class="btn btn-failure"><span><i class="fa fa-exclamation-triangle" aria-hidden="true"></i></span>Report</a>
+			<a href="/report?id=<%=locals.profile.id%>_<%=locals.session.user.id%>" class="btn"><span><i class="fa fa-exclamation-triangle" aria-hidden="true"></i></span>Report</a>
 			<% if (locals.profile.ago) { %>
 				<% if (locals.profile.ago == 'actif') { %>
 				<div><i class="fa fa-circle" aria-hidden="true"></i><%=locals.profile.ago%></div>
