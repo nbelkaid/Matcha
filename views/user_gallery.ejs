@@ -1,0 +1,22 @@
+<!-- Formattage données, gallery -> tableau d'user [user_1, user_2, ... user_n] -->
+<% if(locals.gallery) {
+    <!-- rebmnbvl -->
+    for(var i=0; i < gallery.length; i++) { %>
+        <div class="col-md-4">
+        <div class="user_box">
+        <div class="panel-body">
+        <% if(gallery[i].path){ %>
+            <img class="img-responsive img-circle mini_prof_pic" src="<%= gallery[i].path%>.jpg"/>
+        <% } else if(!gallery[i].path) { %>
+            <img class="img-responsive img-circle mini_prof_pic" src="/images/default.png"/>
+        <% } %>
+        <div class="con_ina">
+            <b><%= gallery[i].login %> - <%= gallery[i].age %></b><br>
+            <%= gallery[i].bio%>
+        </div>
+        </div>
+        <a href="/profil/<%=gallery[i].login%>"><button type="button" class="btn btn-success btn-xs btn_inr">Check my profile!  </button></a>
+            </div>
+        </div>
+    <% } %>
+<% } %>

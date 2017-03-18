@@ -46,6 +46,9 @@ module.exports.get = function(req, res) {
 
 module.exports.post = function(req, res) {
 	console.log("Post: "+req.body)
+	console.log(_.each(req.body, function(value, key) {
+		console.log("key: "+key+", value :"+value)
+	}))
 	if (req.params.user != req.session.user.login) {
 		res.redirect("/");
 	}
@@ -102,6 +105,7 @@ module.exports.post = function(req, res) {
 			})
 			image.create_image(req.session, 4)			
 		}
+	res.redirect("/edit_profil/"+req.params.user)	
 	}
 
 
@@ -111,6 +115,7 @@ module.exports.post = function(req, res) {
 	// }
 	else if (req.body.type == 1) {
 		//Changement tag
+		console.log("WTF_0")
 		tag.delete_tag_user(req.session.user.login, function(){
 			if (_.isString(req.body.tag) == true) {
 				var array = [req.body.tag]	
@@ -122,6 +127,7 @@ module.exports.post = function(req, res) {
 			_.each(array, function(item) {
 				tag.create(req.session.user.login, item)	
 			})
+			res.redirect("/edit_profil/"+req.params.user)
 		})
 	}
 	else if (req.body.type == 2) {

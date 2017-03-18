@@ -8,6 +8,7 @@ var cookieSession = require('cookie-session')
 var index = require('./routes/index');
 var users = require('./routes/users');
 var fileUpload = require('express-fileupload');
+var _ = require('underscore')
 
 var geo = require("./Models/geo.js")
 var user = require("./Models/user.js");
@@ -22,15 +23,15 @@ function myMiddleware (req, res, next) {
     geo.update_user_location(req.session.user.login, function(location) {
       console.log("test_3")
     })
-    console.log(req.session)
+    next()
   }
+  next()
    // if (req.session && req.session.user && req.method === 'GET') {
    //  geo.update_user_location(req.session.user.login, function(location) {
    //    console.log("test_2")
    //    console.log("LOCATION ---> "+location.loc)
    //  })
    // }
-   next()
 }
 // /* <-----------------------------> */
 
@@ -79,7 +80,17 @@ var edit = require("./routes/edit")
 
 app.get('/', function(req, res) {
 	if (req.session.user) {
-		res.render("profile_page", {title: "Hey "+req.session.user.login, session: req.session})
+    user.get_all_user(function(result) {
+      console.log(typeof(result))
+      _.each(result, function(key, value) {
+        console.log("key: "+key+", value:"+value)
+      })
+    res.render("profile_page", {
+      title: "Hey "+req.session.user.login,
+      session: req.session,
+      gallery: result
+    })
+    })
 	}
 	else {
 		res.render("index", {title: 'huhu', session: req.session});

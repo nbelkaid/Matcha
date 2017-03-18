@@ -51,9 +51,9 @@ display: none;
 
 * { -webkit-box-sizing:border-box; -moz-box-sizing:border-box; -ms-box-sizing:border-box; -o-box-sizing:border-box; box-sizing:border-box; }
 
-html { width: 100%; height:100%; overflow:hidden; }
+html { width: 100%; height:100%; /*overflow:hidden;*/}
 
-body { 
+body {
 	width: 100%;
 	height:100%;
 	font-family: 'Open Sans', sans-serif;
@@ -213,11 +213,6 @@ span.female-switch{
 	width: 150px;
 }
 
-.container {
- /*Coupure */
-}
-
-
 ul {
     list-style-type: none;
 }
@@ -344,4 +339,45 @@ header #header-selector ul {
 header #header-selector li:hover ul {
     display: block;
 }
+
+/* Galley User*/
+.user_box
+{
+	color: #ffffff;
+	background-color: #4f587b;
+	border-color: #000000;
+	padding: 15px;
+	margin-bottom: 20px;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	margin-top: 10px;
+}
+
+.pic_ina
+{
+    height:90px;
+    width:30%;
+    float:left;
+}
+.con_ina
+{
+    height:100px;
+    width:100%;
+    margin-left:3%;
+    float:left;
+    text-align: right;
+}
+.btn_inr
+{
+    float:right;
+}
+
+.mini_prof_pic
+{
+	height: 150px;
+	width: 150px;
+}
+
+/*Fin gallery user */
+
 

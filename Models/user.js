@@ -139,6 +139,11 @@ class User {
 			})
 		})
 	}
+	static get_all_user(cb) {
+		connection.query("SELECT * FROM `user` LEFT JOIN `photo` ON `photo`.id_user=`user`.id AND `photo`.is_profil=1", (error, result) => {
+			cb(result)
+		})
+	}
 }
 
 module.exports = User;
