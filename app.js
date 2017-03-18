@@ -78,6 +78,7 @@ var login = require("./routes/login")
 var logout = require("./routes/logout")
 var profil = require("./routes/profil")
 var edit = require("./routes/edit")
+var photo = require("./routes/photo")
 /**/
 
 // Debut gestion appel
@@ -113,6 +114,10 @@ app.get('/profil/:user', profil.get)
 
 app.get('/edit_profil/:user', edit.get)
 app.post('/edit_profil/:user', edit.post)
+
+app.get('/delete_photo:nbr', photo.delete)
+app.get('/set_prof:nbr', photo.set_prof)
+
 //Fin gestion appel
 
 

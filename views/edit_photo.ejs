@@ -1,26 +1,50 @@
 <div class="edit_photo">
 	<form method="POST" encType="multipart/form-data">
 		<input type="hidden" name="type" value="0">
-		<img class="edit_photo_mini" id="currentPhoto" src="/images/<%=session.user.login %>/photo_1.jpg" onerror="this.src='../images/default.png'">
-		<input type="file" name="photo_1">
-<!-- 		<label><input type="radio" name="profile" value="1" <% if (prof_nbr == 1) { %> checked="checked" <% } %> >Photo de profil</label> -->
-		<img class="edit_photo_mini" id="currentPhoto" src="/images/<%=session.user.login %>/photo_2.jpg" onerror="this.src='../images/default.png'">		
-		<input type="file" name="photo_2">
-<!-- 		<label><input type="radio" name="profile" value="1" <% if (prof_nbr == 2) { %> checked="checked" <% } %> >Photo de profil</label> -->
-		<img class="edit_photo_mini" id="currentPhoto" src="/images/<%=session.user.login %>/photo_3.jpg" onerror="this.src='../images/default.png'">		
-		<input type="file" name="photo_3">
-<!-- 		<label><input type="radio" name="profile" value="1" <% if (prof_nbr == 3) { %> checked="checked" <% } %> >Photo de profil</label> -->
-		<img class="edit_photo_mini" id="currentPhoto" src="/images/<%=session.user.login %>/photo_4.jpg" onerror="this.src='../images/default.png'">		
+		<div>
+			<label class="text_plain text-left text-primary">Photo 1:</label>
+			<% if(_.findWhere(photos, {path: "/images/"+session.user.login+"/photo_1"})) { %>
+				<img class="edit_photo_mini" id="currentPhoto" src="/images/<%=session.user.login %>/photo_1.jpg">
+				<a href="/delete_photo1" class="btn btn-primary">Supprimer</a>
+				<a href="/set_prof1" class="btn btn-primary">Mettre en photo de profil</a>
+			<% } else { %>
+				<img class="edit_photo_mini" id="currentPhoto" src="/images/default.png">
+			<% } %>
+			<input type="file" name="photo_1">
+		</div>
+		<div>
+			<label class="text_plain text-left text-primary">Photo 2:</label>
+			<% if(_.findWhere(photos, {path: "/images/"+session.user.login+"/photo_2"})) { %>
+				<img class="edit_photo_mini" id="currentPhoto" src="/images/<%=session.user.login %>/photo_2.jpg">
+				<a href="/delete_photo2" class="btn btn-primary">Supprimer</a>
+				<a href="/set_prof2" class="btn btn-primary">Mettre en photo de profil</a>
+			<% } else { %>
+				<img class="edit_photo_mini" id="currentPhoto" src="/images/default.png">
+			<% } %>
+			<input type="file" name="photo_2">			
+		</div>
+		<div>
+			<label class="text_plain text-left text-primary">Photo 3:</label>
+			<% if(_.findWhere(photos, {path: "/images/"+session.user.login+"/photo_3"})) { %>
+				<img class="edit_photo_mini" id="currentPhoto" src="/images/<%=session.user.login %>/photo_3.jpg">
+				<a href="/delete_photo3" class="btn btn-primary">Supprimer</a>
+				<a href="/set_prof3" class="btn btn-primary">Mettre en photo de profil</a>
+			<% } else { %>
+				<img class="edit_photo_mini" id="currentPhoto" src="/images/default.png">
+			<% } %>
+			<input type="file" name="photo_3">
+		</div>
+		<div>
+			<label class="text_plain text-left text-primary">Photo 4:</label>
+			<% if(_.findWhere(photos, {path: "/images/"+session.user.login+"/photo_4"})) { %>
+				<img class="edit_photo_mini" id="currentPhoto" src="/images/<%=session.user.login %>/photo_4.jpg">
+				<a href="/delete_photo4" class="btn btn-primary">Supprimer</a>
+				<a href="/set_prof4" class="btn btn-primary">Mettre en photo de profil</a>
+			<% } else { %>
+				<img class="edit_photo_mini" id="currentPhoto" src="/images/default.png">
+			<% } %>
 		<input type="file" name="photo_4">
-<!-- 		<label><input type="radio" name="profile" value="1" <% if (prof_nbr == 4) { %> checked="checked" <% } %> >Photo de profil</label> -->
+		</div>
 		<button type="submit" class="btn-primary"> Valider </button>
 	</form>
 </div>
-
-<% if (_.findWhere(photo, {path: "/images/"+session.user.login+"photo_1"})) { %>
-	<img class="edit_photo_mini" id="currentPhoto" src="/images/<%=session.user.login %>/photo_1.jpg">
-	
-<% } else { %>
-<% } 
-	if ()
-%>

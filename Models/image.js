@@ -33,18 +33,58 @@ class Image {
 			}
 	})
 	}
+	static create_all_image(req, cb) {
+		var fs = require('fs')
+		var dir = './public/images/'+req.params.user
+		var i = 0
+		if (!fs.existsSync(dir)){
+    		fs.mkdirSync(dir)
+		}
+		if ('photo_1' in req.files) {
+			let Upload_file = req.files.photo_1;
+			Upload_file.mv('./public/images/'+req.params.user+'/photo_1.jpg', function(err) {
+			})
+			image.create_image(req.session, 1)
+		}
+		if ('photo_2' in req.files) {
+			let Upload_file_2 = req.files.photo_2;
+			Upload_file_2.mv('./public/images/'+req.params.user+'/photo_2.jpg', function(err) {
+			})
+			image.create_image(req.session, 2)			
+		}
+		if ('photo_3' in req.files) {
+			let Upload_file_3 = req.files.photo_3;
+			Upload_file_3.mv('./public/images/'+req.params.user+'/photo_3.jpg', function(err) {
+			})
+			image.create_image(req.session, 3)			
+		}
+		if ('photo_4' in req.files) {
+			let Upload_file_4 = req.files.photo_4;
+			Upload_file_4.mv('./public/images/'+req.params.user+'/photo_4.jpg', function(err) {
+			})
+			image.create_image(req.session, 4)			
+		}
+		cb()
+	}
 	static create_image(session, nbr) {
 		var path = "/images/"+session.user.login+"/photo_"+nbr
 		var values = [session.user.id, path, 0]
-		connection.query("INSERT INTO `photo` (`id_user`, `path`, `is_profil`) VALUES (?, ?, ?)", values)
-	}
-	static set_profile_picture(login, path) {
-		connection.query("UPDATE `photo` JOIN `user` ON `user_id`=`user`.`id` SET `is_profil`=0 WHERE `user`.`login` = ?", login, (error, result) => {
-			connection.query("UPDATE `photo` JOIN `user` ON `user_id`=`user`.`id` SET `is_profil`=1 WHERE `user`.`login` = ? AND `photo`.`path`=?",[login, path])
+		connection.query("DELETE FROM `photo` WHERE `id_user`=? AND `path`=?", [session.user.id, path], () => {
+			connection.query("INSERT INTO `photo` (`id_user`, `path`, `is_profil`) VALUES (?, ?, ?)", values)
 		})
 	}
-	static delete_picture(login, path) {
-		connection.query("DELETE * FROM `photo` WHERE `path`=? AND `user_id`=(SELECT `id` FROM `user` WHERE `login`=?)", [path, login])
+	static set_profile_picture(login, path, cb) {
+		connection.query("UPDATE `photo` JOIN `user` ON `id_user`=`user`.`id` SET `is_profil`=0 WHERE `user`.`login` = ?", login, (error, result) => {
+			connection.query("UPDATE `photo` JOIN `user` ON `id_user`=`user`.`id` SET `is_profil`=1 WHERE `user`.`login` = ? AND `photo`.`path`=?",[login, path], () => {
+				cb()
+			})
+		})
+	}
+	static delete_picture(login, path, cb) {
+		console.log("Path ->"+path)
+		connection.query("DELETE FROM `photo` WHERE `path`=? AND `id_user` IN (SELECT `id` FROM `user` WHERE `login`=?)", [path, login], () => {
+			cb()
+		})
 	}
 }
 

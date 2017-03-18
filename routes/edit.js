@@ -76,36 +76,9 @@ module.exports.post = function(req, res) {
 
 	else if (req.body.type == 0) {
 		//Changement photo
-		var fs = require('fs')
-		var dir = './public/images/'+req.params.user
-		if (!fs.existsSync(dir)){
-    		fs.mkdirSync(dir)
-		}
-		if ('photo_1' in req.files) {
-			let Upload_file = req.files.photo_1;
-			Upload_file.mv('./public/images/'+req.params.user+'/photo_1.jpg', function(err) {
-			})
-			image.create_image(req.session, 1)
-		}
-		if ('photo_2' in req.files) {
-			let Upload_file_2 = req.files.photo_2;
-			Upload_file_2.mv('./public/images/'+req.params.user+'/photo_2.jpg', function(err) {
-			})
-			image.create_image(req.session, 2)			
-		}
-		if ('photo_3' in req.files) {
-			let Upload_file_3 = req.files.photo_3;
-			Upload_file_3.mv('./public/images/'+req.params.user+'/photo_3.jpg', function(err) {
-			})
-			image.create_image(req.session, 3)			
-		}
-		if ('photo_4' in req.files) {
-			let Upload_file_4 = req.files.photo_4;
-			Upload_file_4.mv('./public/images/'+req.params.user+'/photo_4.jpg', function(err) {
-			})
-			image.create_image(req.session, 4)			
-		}
-	res.redirect("/edit_profil/"+req.params.user)	
+		image.create_all_image(req, function() {
+			res.redirect("/edit_profil/"+req.params.user)	
+		})
 	}
 
 
