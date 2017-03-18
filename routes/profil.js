@@ -6,6 +6,9 @@ module.exports.get = function(request, response) {
 			response.redirect('/')
 		else {
 			console.log('profile = ', profile)
+			console.log('session = ', request.session)
+			// Add render : 
+			//    - photo -> locals.picture[0], locals.picture[1], ..., locals.picture[4]
 			response.render('profile_page', {title: profile.login, session: request.session, profile: profile})
 		}
 	})
