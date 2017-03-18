@@ -7,12 +7,61 @@
 
 <body>
 	<% include header %>
-	<div class="login">
-		<h1>
-			<%= title %>
-		</h1>
+
+	<div class="profile-view">
+		<div class="profile-picture">
+			<% if(locals.picture) { %>
+				<div class="profile-picture-main">
+					<div class="profile-picture-item">
+						<img src="<%=locals.picture[0].path%>">
+					</div>
+				</div>
+				<div class="profile-picture-container">
+					<%for(var i = 1; i < locals.picture.length; i++) { %>
+					<div class="profile-picture-item">
+						<img src="/images/<%=locals.profile.login%>/<%=locals.picture[i].path%>">
+					</div>
+					<% } %>
+				</div>
+			<% } else { %>
+			<div class="profile-main">
+				<img src="/images/_no_profile_picture.jpg">
+			</div>
+			<% } %>
+		</div>
+		<div class="profile-info">
+			<ul>
+			<% if(locals.profile.last_n && locals.profile.first_n) { %>
+				<li class="profile-name fs-title"><%=locals.profile.last_n%> <%=locals.profile.first%></li>
+			<% } %>
+			<% if(locals.profile.login) { %>
+				<li class="profile-login fs-subtitle"><%=locals.profile.login%></li>
+			<% } %>
+			<% if(locals.profile.age) { %>
+				<li class="profile-age fs-subtitle"><%=locals.profile.age%></li>
+			<% } %>
+			<% if(locals.profile.kind && locals.profile.looking_for) { %>
+			<% if(locals.profile.kind == 0 && locals.profile.looking_for == 0) { %><li class="profile-seeking fs-subtitle">Seeking : <i class="fa fa-venus" aria-hidden="true"></i></li><% } %>
+			<% if(locals.profile.kind == 0 && locals.profile.looking_for == 1) { %><li class="profile-seeking fs-subtitle">Seeking : <i class="fa fa-venus-mars" aria-hidden="true"></i></li><% } %>
+			<% if(locals.profile.kind == 0 && locals.profile.looking_for == 2) { %><li class="profile-seeking fs-subtitle">Seeking : <i class="fa fa-mars" aria-hidden="true"></i></li><% } %>
+			<% if(locals.profile.kind == 1 && locals.profile.looking_for == 0) { %><li class="profile-seeking fs-subtitle">Seeking : <i class="fa fa-mars" aria-hidden="true"></i></li><% } %>
+			<% if(locals.profile.kind == 1 && locals.profile.looking_for == 1) { %><li class="profile-seeking fs-subtitle">Seeking : <i class="fa fa-venus-mars" aria-hidden="true"></i></li><% } %>
+			<% if(locals.profile.kind == 1 && locals.profile.looking_for == 2) { %><li class="profile-seeking fs-subtitle">Seeking : <i class="fa fa-venus" aria-hidden="true"></i></li><% } %>
+			<% } %>
+			<% if(locals.profile.bio) { %>
+				<li class="profile-bio fs-corps"><%=locals.profile.bio%></li>
+			<% } %>
+			</ul>
+			<a href="/report?id=<%=locals.profile.id%>_<%=locals.session.id%>" class="btn btn-failure"><span><i class="fa fa-exclamation-triangle" aria-hidden="true"></i></span>Report</a>
+			<% if(locals.profile.ago) { %>
+				<% if(locals.profile.ago == 'actif') { %>
+				<div><i class="fa fa-circle" aria-hidden="true"></i><%=locals.profile.ago%></div>
+				<% } else { %>
+				<div><i class="fa fa-circle-thin" aria-hidden="true"></i><%=locals.profile.ago%></div>
+				<% } %>
+			<% } %>
+		</div>
 	</div>
-	<!-- <% include user_gallery %> -->
 	<% include script.ejs%>
 </body>
 
