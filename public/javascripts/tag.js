@@ -8,7 +8,7 @@ $('#myTags').tagit({
     showAutocompleteOnFocus: false,
     removeConfirmation: false,
     caseSensitive: true,
-    allowDuplicates: false,
+    allowDuplicates: true,
     allowSpaces: false,
     readOnly: false,
     tagLimit: 10,
