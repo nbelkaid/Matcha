@@ -1,6 +1,7 @@
 var request = require('request')
 var _ = require('underscore')
 var connection = require("../config/db");
+var	moment = require("moment")
 
 class GeoIp {
 	static get_location(cb) {
@@ -39,10 +40,13 @@ class GeoIp {
 			country: location.country,
 			zip: location.postal,
 			lat: location.loc.split(",")[0],
-			lng: location.loc.split(",")[1]
+			lng: location.loc.split(",")[1],
+			last_connection: moment().format('YYYY-MM-DD HH:mm:ss')
 		}
-		connection.query("UPDATE `user` SET ? WHERE `login`=?", [values, login])
-		cb(location)
+		console.log(values)
+		connection.query("UPDATE `user` SET ? WHERE `login`=?", [values, login], (error, result) => {
+			cb(location)
+		})
 	})
 }
 }

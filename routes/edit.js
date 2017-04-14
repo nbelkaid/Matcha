@@ -52,27 +52,6 @@ module.exports.post = function(req, res) {
 	if (req.params.user != req.session.user.login) {
 		res.redirect("/");
 	}
-	// else if (req.body.type == 0) {
-	// 	//Edition photos
-	// 	var fs = require('fs')
-	// 	var dir = './public/images/'+req.params.user
-	// 	if (!fs.existsSync(dir)){
- //    		fs.mkdirSync(dir)
-	// 	}
-	// 	if (!req.files) {
-	// 	}
-	// 	else {
-	// 		var photo = image.get_image_by_user(req.session.user.login, function(result) {
-	// 			if (result === -1) {
-	// 				res.redirect("/")
-	// 			}
-	// 			else {
-	// 				var i = 0;
-	// 				console.log("req.files"+req.files)
-	// 			}
-	// 		})
-	// 	}
-	// }
 
 	else if (req.body.type == 0) {
 		//Changement photo
@@ -96,6 +75,8 @@ module.exports.post = function(req, res) {
 		}
 		if ('photo_3' in req.files) {
 			let Upload_file_3 = req.files.photo_3;
+			console.log("Size : "+ req.files.photo_3.size)
+			console.log("Type : "+ req.files.photo_3.type)
 			Upload_file_3.mv('./public/images/'+req.params.user+'/photo_3.jpg', function(err) {
 			})
 			image.create_image(req.session, 3)			
@@ -106,14 +87,15 @@ module.exports.post = function(req, res) {
 			})
 			image.create_image(req.session, 4)			
 		}
+		if ('photo_5' in req.files) {
+			let Upload_file_4 = req.files.photo_5;
+			Upload_file_4.mv('./public/images/'+req.params.user+'/photo_5.jpg', function(err) {
+			})
+			image.create_image(req.session, 5)
+		}
 	res.redirect("/edit_profil/"+req.params.user)
 	}
 
-
-	// 	var i = 0;
-	// 	while (i < req.files.lenght) {
-	// 	}
-	// }
 	else if (req.body.type == 1) {
 		//Changement tag
 		console.log("WTF_0")

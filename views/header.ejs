@@ -3,7 +3,9 @@
 		<li class="header-item header-item-left"><a href="/"><i class="fa fa-home" aria-hidden="true"></i></a></li>
 		<% if (typeof(session.user) != "undefined") { %>
 		<li class="header-item header-item-middle">
-			<input class="search-bar" type="text" name="search-tag" placeholder="Search tag">
+			<form action="/search" method="post">
+				<input class="search-bar" type="text" name="search_tag" placeholder="Search for users, tags">
+			</form>
 		</li>
 		<li class="header-item header-item-right">
 			<a class="header-button" href="/profil/<%= session.user.login%>"><i class="fa fa-user" aria-hidden="true"></i></a>

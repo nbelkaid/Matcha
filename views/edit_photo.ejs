@@ -45,6 +45,17 @@
 			<% } %>
 		<input type="file" name="photo_4">
 		</div>
+		<div>
+			<label class="text_plain text-left text-primary">Photo 5:</label>
+			<% if(_.findWhere(photos, {path: "/images/"+session.user.login+"/photo_5"})) { %>
+				<img class="edit_photo_mini" id="currentPhoto" src="/images/<%=session.user.login %>/photo_5.jpg">
+				<a href="/delete_photo5" class="btn btn-primary">Supprimer</a>
+				<a href="/set_prof4" class="btn btn-primary">Mettre en photo de profil</a>
+			<% } else { %>
+				<img class="edit_photo_mini" id="currentPhoto" src="/images/default.png">
+			<% } %>
+		<input type="file" name="photo_5">
+		</div>
 		<button type="submit" class="btn btn-primary"> Valider </button>
 	</form>
 </div>

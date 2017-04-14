@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <% include head.ejs%>
+</head>
+
+<body>
+	<% include header %>
+
+	<!-- Formattage données, gallery -> tableau d'user [user_1, user_2, ... user_n] -->
+	<label class="text_plain text-left text-primary">Username: </label>
+	<br>
+	<div class="gallery_search">
+	<% if(locals.gallery) {
+	    <!-- rebmnbvl -->
+	    for(var i=0; i < gallery.length; i++) { %>
+	        <div class="col-md-4">
+	        <div class="user_box">
+	        <div class="panel-body">
+	        <% if(gallery[i].path){ %>
+	            <img class="img-responsive img-circle mini_prof_pic" src="<%= gallery[i].path%>.jpg"/>
+	        <% } else if(!gallery[i].path) { %>
+	            <img class="img-responsive img-circle mini_prof_pic" src="/images/default.png"/>
+	        <% } %>
+	        <div class="con_ina">
+	            <b><%= gallery[i].login %> - <%= gallery[i].age %></b><br>
+	            <%= gallery[i].bio%>
+	        </div>
+	        </div>
+	        <a href="/profil/<%=gallery[i].login%>"><button type="button" class="btn btn-success btn-xs btn_inr">Check my profile!  </button></a>
+	            </div>
+	        </div>
+	    <% } %>
+	<% } %>
+	</div>
+	<br>
+	<!-- Formattage données, gallery_2 -> tableau d'user [user_1, user_2, ... user_n] -->
+	<label class="text_plain text-left text-primary">Tags: </label>
+	<br>
+	<div class="gallery_search">
+	<% if(locals.gallery_2) {
+	    for(var i=0; i < gallery_2.length; i++) { %>
+	        <div class="col-md-4">
+	        <div class="user_box">
+	        <div class="panel-body">
+	        <% if(gallery_2[i].path){ %>
+	            <img class="img-responsive img-circle mini_prof_pic" src="<%= gallery_2[i].path%>.jpg"/>
+	        <% } else if(!gallery_2[i].path) { %>
+	            <img class="img-responsive img-circle mini_prof_pic" src="/images/default.png"/>
+	        <% } %>
+	        <div class="con_ina">
+	            <b><%= gallery_2[i].login %> - <%= gallery_2[i].age %></b><br>
+	            <%= gallery_2[i].bio%>
+	        </div>
+	        </div>
+	        <a href="/profil/<%=gallery_2[i].login%>"><button type="button" class="btn btn-success btn-xs btn_inr">Check my profile!  </button></a>
+	            </div>
+	        </div>
+	    <% } %>
+	<% } %>
+	</div>
+
+	<% include script.ejs%>

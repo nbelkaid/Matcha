@@ -1,20 +1,37 @@
 var user = require("../Models/user.js")
 var image = require("../Models/image.js")
+var relation  = require("../Models/relation.js")
 
 module.exports.get = function(request, response) {
 	console.log('param-user1 =', request.params.user)
 	var user_prof = request.params.user
 	user.get_user_content(request.params.user, function (profile){
-		if (profile <= 0)
+		if (profile <= 0 || !request.session.user)
 			response.redirect('/')
 		else {
-			console.log('profile = ', profile)
-			console.log('session = ', request.session)
-			console.log('param-user2 =', user_prof)
-			// Add render : 
-			//    - photo -> locals.picture[0], locals.picture[1], ..., locals.picture[4]
-			image.get_image_by_user(user_prof, function(image) {
-				response.render('profile_page', {title: profile.login, session: request.session, profile: profile, picture: image})
+			relation.block_exist_display(profile.id, request.session.user.id, (result) => {
+				if (result) {
+					response.redirect("/")
+				}
+				else {
+					if (request.session.user.login != request.params.user) {
+						relation.visit_pop(request.params.user, function() {
+							console.log("lolilol")
+						})
+					}
+					console.log('profile = ')
+					console.log(profile)
+					image.get_image_by_user(user_prof, function(image) {
+						relation.button_1(request.session.user.id, profile.id, function(button) {
+							console.log("button = "+button)
+							response.render('profile_page', {title: profile.login,
+							session: request.session,
+							profile: profile,
+							button_1: button,
+							picture: image})
+						})
+					})
+				}
 			})
 		}
 	})

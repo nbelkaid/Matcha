@@ -12,6 +12,7 @@ var _ = require('underscore')
 
 var geo = require("./Models/geo.js")
 var user = require("./Models/user.js");
+var gallery = require("./Models/gallery.js")
 
 var app = express();
 
@@ -21,13 +22,14 @@ app.locals._ = _
 
 /*<------------ Apply to all routes ------------>*/
 function myMiddleware (req, res, next) {
-  console.log("test")
-  if (req.session.user) {
-    console.log("test_2")
+  if (req.session.user && req.session.user.login && req.url != "/logout") {
     geo.update_user_location(req.session.user.login, function(location) {
-      console.log("test_3")
+      user.get_user_content(req.session.user.login, function(result) {
+        result.passwd = null
+        req.session.user = result
+        console.log(req.session.user)
+      })
     })
-    next()
   }
   next()
    // if (req.session && req.session.user && req.method === 'GET') {
@@ -79,27 +81,30 @@ var logout = require("./routes/logout")
 var profil = require("./routes/profil")
 var edit = require("./routes/edit")
 var photo = require("./routes/photo")
+var relation = require("./routes/relation")
+var search = require("./routes/search")
 /**/
 
 // Debut gestion appel
 
 app.get('/', function(req, res) {
-	if (req.session.user) {
-    user.get_all_user(function(result) {
-      console.log(typeof(result))
-      _.each(result, function(key, value) {
-        console.log("key: "+key+", value:"+value)
+	if (req.session && req.session.user) {
+    gallery.get_gallery(req.session.user, function(result) {
+      res.render("profile_page", {
+        title: "Hey "+req.session.user.login,
+        session: req.session,
+        gallery: result
       })
-    res.render("profile_page", {
-      title: "Hey "+req.session.user.login,
-      session: req.session,
-      gallery: result
-    })
     })
 	}
-	else {
+	else if (req.session){
+    console.log("haha")
 		res.render("index", {title: 'huhu', session: req.session});
 	}
+  else {
+    console.log("hihi")
+    res.redirect("/")
+  }
 })
 
 
@@ -109,7 +114,6 @@ app.post('/create', create.post)
 app.post('/form_access', login.post)
 
 app.get('/logout', logout.get)
-
 app.get('/profil/:user', profil.get)
 
 app.get('/edit_profil/:user', edit.get)
@@ -118,6 +122,11 @@ app.post('/edit_profil/:user', edit.post)
 app.get('/delete_photo:nbr', photo.delete)
 app.get('/set_prof:nbr', photo.set_prof)
 
+app.post('/relation0', relation.button_1)
+app.post('/relation1', relation.block)
+app.post('/relation2', relation.button_1_bis)
+
+app.post('/search', search.post)
 //Fin gestion appel
 
 
