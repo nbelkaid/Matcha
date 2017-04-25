@@ -10,7 +10,7 @@ class Image {
 		connection.query("INSERT INTO `photo` (`id_user`, `path`, is_profil)")
 	}
 	static get_image_by_user(login, cb) {
-		connection.query("SELECT `path`, `is_profil` FROM `photo` JOIN `user` ON `user`.`id` = `photo`.`id_user` WHERE `user`.`login`=? ORDER BY `is_profil` DESC", [login], (error, result) => {
+		connection.query("SELECT `path`, `is_profil` FROM `photo` JOIN `user` ON `user`.`id` = `photo`.`id_user` WHERE `user`.`login`=? ORDER BY `photo`.`path`", [login], (error, result) => {
 			if (error) {
 				console.log(error)
 				cb(-1)

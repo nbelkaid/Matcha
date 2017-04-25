@@ -13,9 +13,69 @@ var _ = require('underscore')
 var geo = require("./Models/geo.js")
 var user = require("./Models/user.js");
 var gallery = require("./Models/gallery.js")
+var notification = require("./Models/notification.js")
 
 var app = express();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 
+
+// FIN 
+
+//Whenever someone connects this gets executed
+// io.on('connection', function(socket){
+//   console.log('A user connected');
+//   var socket = socket
+//   if (req.session && req.session.user && req.session.user.id) {
+//     notification.get_all_unread_notif(req.session.user.id, function(result) {
+//       if (result && result.length > 0) {
+//         var notif_nbr = result.length
+//       }
+//       else {
+//         var notif_nbr = 0
+//       }
+//       console.log(notif_nbr)
+//       socket.emit('notif-nbr', notif_nbr)
+//     })
+//   }
+//   //Whenever someone disconnects this piece of code executed
+//   socket.on('disconnect', function () {
+//     console.log('A user disconnected');
+//   });
+// });
+
+
+/*
+function hoho (req, res) {
+  var
+      io = require('socket.io'),
+      ioServer = io.listen(8000),
+      sequence = 1;
+      clients = [];
+  // Event fired every time a new client connects:
+  ioServer.on('connection', function(socket) {
+      console.info('New client connected (id=' + socket.id + ').');
+      clients.push(socket);
+
+      // When socket disconnects, remove it from the list:
+      socket.on('disconnect', function() {
+          var index = clients.indexOf(socket);
+          if (index != -1) {
+              clients.splice(index, 1);
+              console.info('Client gone (id=' + socket.id + ').');
+          }
+      });
+  });
+
+  // Every 1 second, sends a message to a random client:
+  setInterval(function() {
+      var randomClient;
+      if (clients.length > 0) {
+          randomClient = Math.floor(Math.random() * clients.length);
+          clients[randomClient].emit('foo', sequence++);
+      }
+  }, 1000);
+} */
 
 // Underscore accesible aux views
 app.locals._ = _
@@ -23,21 +83,20 @@ app.locals._ = _
 /*<------------ Apply to all routes ------------>*/
 function myMiddleware (req, res, next) {
   if (req.session.user && req.session.user.login && req.url != "/logout") {
-    geo.update_user_location(req.session.user.login, function(location) {
-      user.get_user_content(req.session.user.login, function(result) {
-        result.passwd = null
-        req.session.user = result
-        console.log(req.session.user)
-      })
+    geo.get_geoloc_user(req.session.user.id, function(geoloc) {
+      if (geoloc == true) {
+        // Geolocalisation IP
+        geo.update_user_location(req.session.user.login, function(location) {
+          user.get_user_content(req.session.user.login, function(result) {
+            result.passwd = null
+            req.session.user = result
+          })
+        })
+      }
     })
+    // Envoi nb notif a chaque page
   }
   next()
-   // if (req.session && req.session.user && req.method === 'GET') {
-   //  geo.update_user_location(req.session.user.login, function(location) {
-   //    console.log("test_2")
-   //    console.log("LOCATION ---> "+location.loc)
-   //  })
-   // }
 }
 // /* <-----------------------------> */
 
@@ -83,30 +142,13 @@ var edit = require("./routes/edit")
 var photo = require("./routes/photo")
 var relation = require("./routes/relation")
 var search = require("./routes/search")
+var index = require("./routes/index")
 /**/
 
 // Debut gestion appel
 
-app.get('/', function(req, res) {
-	if (req.session && req.session.user) {
-    gallery.get_gallery(req.session.user, function(result) {
-      res.render("profile_page", {
-        title: "Hey "+req.session.user.login,
-        session: req.session,
-        gallery: result
-      })
-    })
-	}
-	else if (req.session){
-    console.log("haha")
-		res.render("index", {title: 'huhu', session: req.session});
-	}
-  else {
-    console.log("hihi")
-    res.redirect("/")
-  }
-})
-
+app.get('/', index.get)
+app.post('/', index.post)
 
 app.get('/create', create.get)
 app.post('/create', create.post)
@@ -149,7 +191,7 @@ app.use(function(err, req, res, next) {
 });
 
 
-app.listen(3000, function() {
+http.listen(3000, function() {
 console.log("Server start -> http://localhost:3000/")
 })
 

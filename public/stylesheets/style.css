@@ -447,14 +447,39 @@ header #header-selector li:hover ul {
     padding: 5px 0;
 }
 
-/** ******************************************************************************** **/
-/**                                                                                  **/
-/**      Search Page                                                                 **/
-/**                                                                                  **/
-/** ******************************************************************************** **/
 
-.gallery_search {
-  display: block;
+.numberCircle {
+    border-radius: 50%;
+
+    width: 38px;
+    height: 38px;
+
+    margin-top: 5px;
+    background: #fff;
+    border: 2px solid #666;
+    color: #666;
+    text-align: center;
+
+    font: 32px Arial, sans-serif;
 }
 
 
+/*.input_nude:not(.unstyled) {
+  width: 100%; 
+  margin-bottom: 10px; 
+  background: rgba(0,0,0,0.3);
+  border: none;
+  outline: none;
+  padding: 10px;
+  font-size: 13px;
+  color: #fff;
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.3);
+  border: 1px solid rgba(0,0,0,0.3);
+  border-radius: 4px;
+  box-shadow: inset 0 -5px 45px rgba(100,100,100,0.2), 0 1px 1px rgba(255,255,255,0.2);
+  -webkit-transition: box-shadow .5s ease;
+  -moz-transition: box-shadow .5s ease;
+  -o-transition: box-shadow .5s ease;
+  -ms-transition: box-shadow .5s ease;
+  transition: box-shadow .5s ease;
+}*/

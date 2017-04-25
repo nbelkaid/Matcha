@@ -1,6 +1,7 @@
 var user = require("../Models/user.js")
 var image = require("../Models/image.js")
 var relation  = require("../Models/relation.js")
+var notification = require("../Models/notification.js")
 
 module.exports.get = function(request, response) {
 	console.log('param-user1 =', request.params.user)
@@ -18,10 +19,15 @@ module.exports.get = function(request, response) {
 						relation.visit_pop(request.params.user, function() {
 							console.log("lolilol")
 						})
+						notification.create_notif(profile.id, request.session.user.id, 1, function() {
+							console.log("Notif")
+						})
 					}
 					console.log('profile = ')
 					console.log(profile)
 					image.get_image_by_user(user_prof, function(image) {
+						console.log("----- IMAGE PROFIL -----")
+						console.log(image)
 						relation.button_1(request.session.user.id, profile.id, function(button) {
 							console.log("button = "+button)
 							response.render('profile_page', {title: profile.login,

@@ -48,7 +48,20 @@ class GeoIp {
 			cb(location)
 		})
 	})
-}
+	}
+	static get_geoloc_user(id_user, cb) {
+		connection.query("SELECT `geoloc` FROM `user` WHERE `id`=?", [id_user], (error, result) => {
+			if (error) {
+				throw error
+			}
+			else if (result.geoloc == 0) {
+				cb(false)
+			}
+			else {
+				cb(true)
+			}
+		})
+	}
 }
 
 module.exports = GeoIp;

@@ -13,15 +13,13 @@ class Gallery {
 		var lng_prof = prof_cont.lng
 		if (kind == 0) {
 			if (looking_for == 0) {
-				var str = "IF (? > 0, ) \
-					ACOS((SIN(?) * SIN(`user`.`lat`)) + (COS(?) * COS(`user`.`lat`) * COS(`user`.`lng` - ?))) * 6378137) AS `distance`\
-					"
-				connection.query("SELECT `user`.*, `photo`.`path` \
+				connection.query("SELECT `user`.*, `photo`.`path`, \
+					(ACOS((SIN(? * 0.01744) * SIN(`user`.`lat` * 0.01744)) + (COS(? * 0.01744) * COS(`user`.`lat` * 0.01744) * COS(`user`.`lng` * 0.01744 - ? * 0.01744))) * 6378137) AS `distance` \
 					FROM `user` \
 					LEFT JOIN `photo` ON `photo`.`id_user`=`user`.`id` AND `photo`.`is_profil`=1 \
 					WHERE `user`.`kind`=1 AND `user`.`looking_for` <= 1 \
 					AND `user`.`id` != ? \
-					", [id_prof],(error, result) => {
+					", [prof_cont.lat, prof_cont.lat, prof_cont.lng, id_prof],(error, result) => {
 						if(error) {
 							throw error
 						}
@@ -31,10 +29,12 @@ class Gallery {
 					})
 			}
 			else if (looking_for == 2) {
-				connection.query("SELECT `user`.*, `photo`.`path` FROM `user` \
+				connection.query("SELECT `user`.*, `photo`.`path`, \
+					(ACOS((SIN(? * 0.01744) * SIN(`user`.`lat` * 0.01744)) + (COS(? * 0.01744) * COS(`user`.`lat` * 0.01744) * COS(`user`.`lng` * 0.01744 - ? * 0.01744))) * 6378137) AS `distance` \
+				 FROM `user` \
 					LEFT JOIN `photo` ON `photo`.`id_user`=`user`.`id` AND `photo`.`is_profil`=1 \
 					WHERE `user`.`kind`=0 AND `user`.`looking_for` >= 1 \
-					AND `user`.`id` != ? ", [id_prof],(error, result) => {
+					AND `user`.`id` != ? ", [prof_cont.lat, prof_cont.lat, prof_cont.lng, id_prof],(error, result) => {
 						if(error) {
 							throw error
 						}
@@ -44,12 +44,13 @@ class Gallery {
 					})
 			}
 			else if (looking_for == 1) {
-				console.log("HAHAHA ds")
-				connection.query("SELECT `user`.*, `photo`.`path` FROM `user` \
+				connection.query("SELECT `user`.*, `photo`.`path`, \
+					(ACOS((SIN(? * 0.01744) * SIN(`user`.`lat` * 0.01744)) + (COS(? * 0.01744) * COS(`user`.`lat` * 0.01744) * COS(`user`.`lng` * 0.01744 - ? * 0.01744))) * 6378137) AS `distance` \
+				 FROM `user` \
 					LEFT JOIN `photo` ON `photo`.`id_user`=`user`.`id` AND `photo`.`is_profil`=1 \
 					WHERE ((`user`.kind = 0 AND `user`.`looking_for` >= 1) \
 					OR (`user`.kind = 1 AND `user`.`looking_for` <= 1)) \
-					AND `user`.`id` != ? ", [id_prof],(error, result) => {
+					AND `user`.`id` != ? ", [prof_cont.lat, prof_cont.lat, prof_cont.lng, id_prof],(error, result) => {
 						if(error) {
 							throw error
 						}
@@ -61,10 +62,12 @@ class Gallery {
 		}
 		else if (kind == 1) {
 			if (looking_for == 0) {
-				connection.query("SELECT `user`.*, `photo`.`path` FROM `user` \
+				connection.query("SELECT `user`.*, `photo`.`path`, \
+					(ACOS((SIN(? * 0.01744) * SIN(`user`.`lat` * 0.01744)) + (COS(? * 0.01744) * COS(`user`.`lat` * 0.01744) * COS(`user`.`lng` * 0.01744 - ? * 0.01744))) * 6378137) AS `distance` \
+				 FROM `user` \
 					LEFT JOIN `photo` ON `photo`.`id_user`=`user`.`id` AND `photo`.`is_profil`=1 \
 					WHERE `user`.`kind`=0 AND `user`.`looking_for` <= 1 \
-					AND `user`.`id` != ? ", [id_prof],(error, result) => {
+					AND `user`.`id` != ? ", [prof_cont.lat, prof_cont.lat, prof_cont.lng, id_prof],(error, result) => {
 						if(error) {
 							throw error
 						}
@@ -74,10 +77,12 @@ class Gallery {
 					})
 			}
 			else if (looking_for == 2) {
-				connection.query("SELECT `user`.*, `photo`.`path` FROM `user` \
+				connection.query("SELECT `user`.*, `photo`.`path`, \
+					(ACOS((SIN(? * 0.01744) * SIN(`user`.`lat` * 0.01744)) + (COS(? * 0.01744) * COS(`user`.`lat` * 0.01744) * COS(`user`.`lng` * 0.01744 - ? * 0.01744))) * 6378137) AS `distance` \
+				 FROM `user` \
 					LEFT JOIN `photo` ON `photo`.`id_user`=`user`.`id` AND `photo`.`is_profil`=1 \
 					WHERE `user`.`kind`=1 AND `user`.`looking_for` >= 1 \
-					AND `user`.`id` != ? ", [id_prof],(error, result) => {
+					AND `user`.`id` != ? ", [prof_cont.lat, prof_cont.lat, prof_cont.lng, id_prof],(error, result) => {
 						if(error) {
 							throw error
 						}
@@ -87,11 +92,13 @@ class Gallery {
 					})
 			}
 			else if (looking_for == 1) {
-				connection.query("SELECT `user`.*, `photo`.`path` FROM `user` \
+				connection.query("SELECT `user`.*, `photo`.`path`, \
+					(ACOS((SIN(? * 0.01744) * SIN(`user`.`lat` * 0.01744)) + (COS(? * 0.01744) * COS(`user`.`lat` * 0.01744) * COS(`user`.`lng` * 0.01744 - ? * 0.01744))) * 6378137) AS `distance` \
+				 FROM `user` \
 					LEFT JOIN `photo` ON `photo`.`id_user`=`user`.`id` AND `photo`.`is_profil`=1 \
 					WHERE ((`user`.kind = 0 AND `user`.`looking_for` <= 1) \
 					OR (`user`.kind = 1 AND `user`.`looking_for` >= 1)) \
-					AND `user`.`id` != ? ", [id_prof],(error, result) => {
+					AND `user`.`id` != ? ", [prof_cont.lat, prof_cont.lat, prof_cont.lng, id_prof],(error, result) => {
 						if(error) {
 							throw error
 						}

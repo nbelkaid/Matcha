@@ -13,7 +13,7 @@ class relation {
 								throw error
 							}
 							else if(cb) {
-								cb(result)
+								cb(2)
 							}
 						})
 					})
@@ -26,7 +26,7 @@ class relation {
 								throw error
 							}
 							else if(cb) {
-								cb(result)
+								cb(1)
 							}
 						})
 					})
@@ -92,38 +92,63 @@ class relation {
 			}
 		})
 	}
-	static button_1(id_aut, id_rec, cb) {
-		connection.query("SELECT `type` FROM `relation` WHERE `user_aut`=? AND `user_rec`=?", [id_aut, id_rec], (error, result) => {
+	static block_exist_display_return(id_1, id_2) {
+		connection.query("SELECT * FROM `relation` WHERE `type`= -1 AND ((`user_aut`=? AND `user_rec`=?) OR (`user_aut`=? AND `user_rec`=?))", [id_1, id_2, id_2, id_1], (error, result) => {
 			if (error) {
 				throw error
 			}
-			if (result && result.length) {
-				if(result[0].type == 1) {
-					cb(2)
-				}
-				else if(result[0].type == 2) {
-					cb(4)
-				}
+			if (result && result.length > 0) {
+				return 1
 			}
 			else {
-				connection.query("SELECT `type` FROM `relation` WHERE `user_aut`=? AND `user_rec`=? LIMIT 1", [id_rec, id_aut], (error, result) => {
-					console.log("resultat b :"+result)
+				return 2
+			}
+		})
+	}
+
+	static button_1(id_aut, id_rec, cb) {
+		connection.query("SELECT `path` FROM `photo` WHERE `id_user`=?", [id_aut], (error, result) => {
+			if (error) {
+				throw error
+			}
+			else if (result && result.length > 0) {
+				// ici 
+				connection.query("SELECT `type` FROM `relation` WHERE `user_aut`=? AND `user_rec`=?", [id_aut, id_rec], (error, result) => {
 					if (error) {
 						throw error
 					}
 					if (result && result.length) {
-						if (result[0].type == 1) {
-							cb(3)
+						if(result[0].type == 1) {
+							cb(2)
 						}
-						else if (result[0].type == 2) {
+						else if(result[0].type == 2) {
 							cb(4)
 						}
 					}
 					else {
-						cb(1)
-					}
-				})
+						connection.query("SELECT `type` FROM `relation` WHERE `user_aut`=? AND `user_rec`=? LIMIT 1", [id_rec, id_aut], (error, result) => {
+							console.log("resultat b :"+result)
+							if (error) {
+								throw error
+							}
+							if (result && result.length) {
+								if (result[0].type == 1) {
+									cb(3)
+								}
+								else if (result[0].type == 2) {
+									cb(4)
+								}
+							}
+							else {
+								cb(1)
+							}
+						})
 
+					}
+				})				
+			}
+			else {
+				cb(0)
 			}
 		})
 	}
@@ -166,6 +191,22 @@ class relation {
 				cb()
 			}
 		})
+	}
+	static get_all_blocked_user_display(id_prof, cb) {
+		connection.query("SELECT `user`.`login` FROM `relation` JOIN `user` ON (`user_aut`=? AND `user_rec`=`user`.`id`) OR (`user_aut`=`user`.`id` AND `user_rec`=?) WHERE `type`= -1", [id_prof, id_prof], (error, result) => {
+			if (error) {
+				throw error
+			}
+			if (result && result.length > 0 && cb) {
+				cb(result)
+			}
+			else {
+				cb(false)
+			}
+		})
+	}
+	static get_all_blocked_user(login, cb) {
+
 	}
 }
 

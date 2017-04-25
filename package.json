@@ -18,6 +18,8 @@
     "morgan": "~1.7.0",
     "mysql": "^2.12.0",
     "serve-favicon": "~2.3.0",
+    "siiimple-toast": "^1.0.9",
+    "socket.io": "^1.7.3",
     "underscore": "^1.8.3"
   },
   "devDependencies": {

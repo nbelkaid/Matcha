@@ -1,8 +1,15 @@
 var relation = require("../Models/relation.js")
+var notification = require("../Models/notification.js")
 
 module.exports.button_1 = function(req, res) {
 	if (req.session.user.id && req.session.user.id == req.body.id_aut) {
-		relation.create_like(req.body.id_aut, req.body.id_rec, function() {
+		relation.create_like(req.body.id_aut, req.body.id_rec, function(type) {
+			if (type == 1) {
+				notification.create_notif(req.body.id_rec, req.body.id_aut, 2)
+			}
+			if (type == 2) {
+				notification.create_notif(req.body.id_rec, req.body.id_aut, 3)
+			}
 			relation.like_pop(req.body.id_rec, function() {
 				res.redirect(req.headers.referer)
 			})			
