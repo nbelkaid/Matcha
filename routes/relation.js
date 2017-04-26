@@ -5,10 +5,16 @@ module.exports.button_1 = function(req, res) {
 	if (req.session.user.id && req.session.user.id == req.body.id_aut) {
 		relation.create_like(req.body.id_aut, req.body.id_rec, function(type) {
 			if (type == 1) {
-				notification.create_notif(req.body.id_rec, req.body.id_aut, 2)
+				notification.create_notif(req.body.id_rec, req.body.id_aut, 2, function(result) {
+					req.io.to(req.body.id_rec).emit('like', {message: req.session.user.login + " a liké votre profil !",
+						id_not: result});
+				})
 			}
 			if (type == 2) {
-				notification.create_notif(req.body.id_rec, req.body.id_aut, 3)
+				notification.create_notif(req.body.id_rec, req.body.id_aut, 3, function(result) {
+					req.io.to(req.body.id_rec).emit('match', {message:  "Félicitations ! Tu as matché avec " + req.session.user.login,
+						id_not: result});
+				})
 			}
 			relation.like_pop(req.body.id_rec, function() {
 				res.redirect(req.headers.referer)

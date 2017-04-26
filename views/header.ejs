@@ -11,26 +11,27 @@
 		<ul>
 		<%
 			if (locals.notif) { %>
-			<div class="numberCircle"><%= notif.lentgh%></div>
+			<a href="#"><div id="notif_nbr" class="numberCircle"><%= notif.lentgh%></div></a>
 			<% } else { %>
-			<div class="numberCircle">0</div>
+			<a href="#"><div id="notif_nbr" onclick=get_all_notif() class="numberCircle">0</div></a>
 			<% }
 		%>
 		</ul>
-		<ul id="header-selector">
+<!-- 		<ul id="header-selector">
 				<li class="header-selector-main"><a href="#"><i class="fa fa-bell" aria-hidden="true"></i></a>
 					<ul>
 						<li class="header-selector-item"><a class="header-label" href="/edit_profil/<%= session.user.login%>">Settings</a></li>
 						<li class="header-selector-item"><a class="header-button" href="/logout">Log out</a></li>
 					</ul>
 				</li>
-		</ul>
+		</ul> -->
 			<a class="header-button" href="/profil/<%= session.user.login%>"><i class="fa fa-user" aria-hidden="true"></i></a>
 			<ul id="header-selector">
 				<li class="header-selector-main"><a href="#"><i class="fa fa-chevron-down" aria-hidden="true"></i></a>
 					<ul>
 						<li class="header-selector-item"><a class="header-label" href="/edit_profil/<%= session.user.login%>">Settings</a></li>
 						<li class="header-selector-item"><a class="header-button" href="/logout">Log out</a></li>
+						<li class="header-selector-item">History</li>
 					</ul>
 				</li>
 			</ul>
@@ -39,3 +40,5 @@
 	</ul>
 
 </header>
+
+<div class="notification" id="notification" ></div>

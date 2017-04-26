@@ -1,0 +1,259 @@
+/** ******************************************************************************** **/
+/**                                                                                  **/
+/**      Search Page                                                                 **/
+/**                                                                                  **/
+/** ******************************************************************************** **/
+
+.gallery_search {
+  display: block;
+}
+
+
+
+/** ******************************************************************************** **/
+/**                                                                                  **/
+/**   Search - Input                                                               **/
+/**                                                                                  **/
+/** ******************************************************************************** **/
+
+.search-container {
+    display: inline-block;
+    position: relative;
+    width: 80%;
+    min-width: 550px;
+}
+
+#profile-search-container input[type="submit"] {
+    display: inline-block;
+    z-index: 0;
+    background: white;
+    height: 45px;
+    color: #162f44;
+    border: 0 none;
+    border-radius: 3px;
+    padding: 5px;
+    margin: 5px;
+}
+#profile-search-container input[type="submit"]:hover {
+    background: #162f44;
+    /*color: white;*/
+}
+
+.search-box-year > ul > li,
+.search-box-year > ul > li > a:hover {
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+.search-box-sort > ul > li,
+.search-box-sort > ul > li > a:hover {
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.search-box {
+    display: inline-block;
+    position: relative;
+    width: 25%;
+    margin: 0;
+    margin-left: -5px;
+}
+
+#search-selector,
+#search-selector ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    text-transform: uppercase;
+}
+
+#search-selector a {
+    color: #162f44;
+    text-decoration: none;
+}
+
+#search-selector {
+    text-align: center;
+}
+
+#search-selector .search-selector-main {
+    display: block;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    /*background: white;*/
+    line-height: 45px;
+    height: 45px;
+}
+
+#search-selector .search-selector-item {
+    display: block;
+    background: white;
+    height: calc(100% + 10px);
+    box-shadow: inset 0px 1px #162f44;
+}
+
+#search-selector .search-selector-item a {
+    font-size: 16px;
+    line-height: 32px;
+}
+
+#search-selector li ul {
+    position: relative;
+    right: 0;
+    text-align: left;
+}
+
+#search-selector ul li {
+    display: inherit;
+}
+
+#search-selector a {
+    display: block;
+    position: relative;
+}
+
+#search-selector ul li a {
+    display: block;
+    position: relative;
+}
+
+#search-selector ul {
+    position: absolute;
+    display: none;
+    width: 100%;
+}
+
+#search-selector ul a {
+    padding: 0 10px;
+    padding-right: 30px;
+}
+
+#search-selector li:focus ul,
+#search-selector li:hover ul {
+    text-decoration: none;
+    background: #162f44;
+    /*color: white;*/
+    display: block;
+    position: absolute;
+}
+
+#search-selector a:hover {
+    background: #162f44;
+    /*color: white;*/
+}
+
+.search-sort-active {
+    /*background: #162f44 !important;*/
+}
+
+.search-sort-active a {
+    /*color: white !important;*/
+}
+
+.search-text {
+    width: 80%;
+    height: 30px;
+    margin: 10px;
+    text-align: center;
+    border: 0;
+    line-height: 30px;
+    color: #162f44;
+}
+
+.search-slider {
+    margin: 10px;
+    border: 0;
+    background: rgba(75, 75, 75, 0.4);
+}
+
+.search-slider .ui-slider-range {
+    background: #162f44;
+    border: 0;
+}
+
+.search-slider .ui-slider-handle {
+    border-radius: 100%;
+}
+
+.search-slider .ui-slider-handle:hover {
+    background-color: #b75154;
+    background-image: -webkit-linear-gradient(-135deg, #b75154, #d29292);
+    background-image: linear-gradient(-135deg, #b75154, #d29292);
+    box-shadow: 0 0 10px 0.33px #d29292;
+    border: rgb(75, 75, 75);
+    outline: none;
+}
+
+.search-slider .ui-slider-handle:focus {
+    outline: none;
+    border: 1px solid #dddddd;
+    background: #f6f6f6 url(images/ui-bg_highlight-soft_100_f6f6f6_1x100.png) 50% 50% repeat-x;
+    box-shadow: 0 0 10px 0.33px #d29292;
+}
+
+/** ******************************************************************************** **/
+/**                                                                                  **/
+/**   Search                                                                          **/
+/**                                                                                  **/
+/** ******************************************************************************** **/
+
+#profile-search-container {
+    position: absolute;
+    width: calc(100% - 100px);
+    min-width: 490px;
+    left: 50px;
+    right: 50px;
+    margin: 0 auto;
+    align-content: center;
+}
+
+#profile-search-box {
+    display: inline-block;
+    width: 225px;
+    height: 225px;
+    margin: 25px 10px;
+    overflow: hidden;
+    border-radius: 100%;
+    background: #162f44;
+    text-decoration: none;
+    border: 3px solid white;
+    box-shadow: 0 0 15px 10px rgba(0, 0, 0, 0.4);
+}
+
+#profile-search-box .profile-search-image {
+    width: 100%;
+    height: 150px;
+    overflow: hidden;
+    transition: 0.7s;
+}
+
+#profile-search-box .profile-search-image:hover {
+    height: 100%;
+}
+
+#profile-search-box .profile-search-image .pic {
+    display: block;
+    height: 225px;
+    margin: 0 auto;
+    max-width: 225px;
+}
+
+#profile-search-box .profile-search-name {
+    position: relative;
+    top: 0;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    background: #162f44;
+}
+
+#profile-search-box .profile-search-name .fs-title {
+    margin: 10px;
+    color: white;
+}
+
+#profile-search-box .profile-search-name .fs-subtitle {
+    margin: 10px;
+    color: white;
+}
+

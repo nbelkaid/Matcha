@@ -19,8 +19,9 @@ module.exports.get = function(request, response) {
 						relation.visit_pop(request.params.user, function() {
 							console.log("lolilol")
 						})
-						notification.create_notif(profile.id, request.session.user.id, 1, function() {
-							console.log("Notif")
+						notification.create_notif(profile.id, request.session.user.id, 1, function(result) {
+							request.io.to(profile.id).emit('visit', {message: request.session.user.login + " a visité votre profil !",
+								id_not: result});
 						})
 					}
 					console.log('profile = ')

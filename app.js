@@ -2,13 +2,14 @@ var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
-var cookieParser = require('cookie-parser');
+var cookieParser = require('cookie-parser')('42424242');
 var bodyParser = require('body-parser');
 var cookieSession = require('cookie-session')
 var index = require('./routes/index');
 var users = require('./routes/users');
 var fileUpload = require('express-fileupload');
 var _ = require('underscore')
+var sharedsession = require("express-socket.io-session");
 
 var geo = require("./Models/geo.js")
 var user = require("./Models/user.js");
@@ -81,6 +82,10 @@ function hoho (req, res) {
 app.locals._ = _
 
 /*<------------ Apply to all routes ------------>*/
+app.use(function(req, res, next) {
+    req.io = io;
+    next();
+});
 function myMiddleware (req, res, next) {
   if (req.session.user && req.session.user.login && req.url != "/logout") {
     geo.get_geoloc_user(req.session.user.id, function(geoloc) {
@@ -100,16 +105,16 @@ function myMiddleware (req, res, next) {
 }
 // /* <-----------------------------> */
 
-app.use(cookieParser());
+app.use(cookieParser);
 app.set('trust proxy', 1) // trust first proxy
 
-app.use(cookieSession({
+var session = cookieSession({
   name: 'session',
   keys: ['42424242'],
+  maxAge: 24 * 60 * 60 * 1000
+})
 
-  // Cookie Options
-  maxAge: 24 * 60 * 60 * 1000 // 24 hours
-}))
+app.use(session)
 
 
 
@@ -132,6 +137,53 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(myMiddleware)
+
+
+// NOTIFICATION SOCKET IO 
+
+io.use(function(socket, next) {
+    var req = socket.handshake;
+    var res = {};
+    cookieParser(req, res, function(err) {
+        if (err) return next(err);
+        session(req, res, next);
+    });
+});
+
+io.on('connection', function(socket){
+  console.log('A user connected');
+  console.log("test"+socket.handshake.session)
+  // Ajout de l'utilisateur a une room avec room = id_room
+  if (socket.handshake.session && socket.handshake.session.user && socket.handshake.session.user.id) {
+    socket.join(socket.handshake.session.user.id)
+    notification.get_all_unread_notif(socket.handshake.session.user.id, function(result) {
+      if (result && result.length > 0) {
+        var notif_nbr = result.length
+      }
+      else {
+        var notif_nbr = 0
+      }
+      socket.emit('notif-nbr', {nbr: notif_nbr})
+    })
+    socket.on('read_not', function(data) {
+      notification.set_notif_read(data.id_not, function() {
+        socket.emit('one_read')
+      })
+    })
+    socket.on('get_all_notif', function(){
+      notification.get_all_unread_notif(socket.handshake.session.user.id, function(result) {
+        socket.emit('all_notif', {notif: result})
+      })
+    })
+  }
+  //Whenever someone disconnects this piece of code executed
+  socket.on('disconnect', function () {
+    console.log('A user disconnected');
+  });
+});    
+
+
+
 
 /*Required routes*/
 var create = require("./routes/create")
