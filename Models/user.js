@@ -18,7 +18,6 @@ class User {
 		}
 		var age = moment().diff(content.birth, 'years')
 		var values = [content.u, hash, content.m, gender, content.first_n, content.last_n, content.phone, orient, content.birth, age]
-		console.log(values)
 		connection.query("SELECT * FROM `user` WHERE login=? OR phone=? OR eemail=?", [content.u, content.phone, content.m], (error, result) => {
 			if (error)
 			{
@@ -35,10 +34,8 @@ class User {
 			}
 			else {
 				console.log("Resultat requete")
-				console.log(result)
-				connection.query("INSERT INTO `user` (`login`, `passwd`, `eemail`, `kind`, `first_n`, `last_n`, `phone`, `looking_for`, `birth`, `age`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", values, (error, result) => {
-				console.log(result)
-				if (error)
+					connection.query("INSERT INTO `user` (`login`, `passwd`, `eemail`, `kind`, `first_n`, `last_n`, `phone`, `looking_for`, `birth`, `age`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", values, (error, result) => {
+					if (error)
 					console.log(error)
 					cb(-1)
 				})
@@ -48,7 +45,6 @@ class User {
 	}
 	static connect(content, session, cb) {
 		var hash = bcrypt.hashSync(content.p, 8);
-		console.log(session)
 		connection.query("SELECT * FROM `user` WHERE `login`=?", [content.u], (error, result) => {
 			if (error) {
 				console.log(error)
@@ -58,11 +54,9 @@ class User {
 				cb(0)
 			}
 			else if (result[0].login == content.u && bcrypt.compareSync(content.p, result[0].passwd) == true) {
-				console.log(content)
 				session.user = {}
 				result[0].passwd = null
 				session.user = result[0]
-				console.log(session)
 				session.save()
 				cb(1)
 			}
@@ -70,7 +64,6 @@ class User {
 	}
 	static is_true_passwd(login, passwd) {
 		connection.query("SELECT * FROM `user` WHERE `login`=?", [content.u], (error, result, session) => {
-			console.log(result)
 			if (error) {
 				console.log(error)
 				cb(-1)
@@ -85,9 +78,35 @@ class User {
 			}
 		})	
 	}
+	static active(id, is_active, cb) {
+		connection.query("UPDATE `user` SET is_active = ? WHERE id = ?", [is_active, id], (error, result, session) => {
+			if (error) {
+				throw error
+			}
+			else if (result) {
+				cb(1)
+			}
+			else {
+				cb(null)
+			}
+		})	
+	}
 	static get_user_content(login, cb) {
 		connection.query("SELECT * FROM `user` WHERE `login`=?", login, (error, result, session) => {
-			console.log(result)
+			if (error) {
+				cb(-1)
+			}
+			else if (result.length == 0) {
+				cb(0)
+			}
+			else {
+				result[0].passwd = null
+				cb(result[0])
+			}
+		})	
+	}
+	static get_all_with_user_id(id_user, cb) {
+		connection.query("SELECT * FROM `user` WHERE `id`=?", id_user, (error, result, session) => {
 			if (error) {
 				cb(-1)
 			}

@@ -151,11 +151,18 @@ io.use(function(socket, next) {
 });
 
 io.on('connection', function(socket){
-  console.log('A user connected');
-  console.log("test"+socket.handshake.session)
+  // console.log('A user connected');
+  // console.log("test"+socket.handshake.session)
   // Ajout de l'utilisateur a une room avec room = id_room
   if (socket.handshake.session && socket.handshake.session.user && socket.handshake.session.user.id) {
     socket.join(socket.handshake.session.user.id)
+    
+    var Users = require('./Models/user.js')
+
+    Users.active(socket.handshake.session.user.id, 1, function(result) {
+      console.log(result)
+    })
+
     notification.get_all_unread_notif(socket.handshake.session.user.id, function(result) {
       if (result && result.length > 0) {
         var notif_nbr = result.length
@@ -175,10 +182,88 @@ io.on('connection', function(socket){
         socket.emit('all_notif', {notif: result})
       })
     })
+    socket.on('get_message', function(data) {
+      var message = require('./Models/chat.js')
+
+      data = data.split(' ')
+
+      if (data.length == 1) {
+        message.get_all_message_with_id_user_and_login(socket.handshake.session.user.id, data, function(messages) {
+          socket.emit('display_conversation', {
+            message : messages,
+            id_user : socket.handshake.session.user.id
+          })
+        })
+      }
+      if (data.length == 2) {
+        message.get_all_message_with_id_user_and_first_and_last_name(socket.handshake.session.user.id, data[0], data[1], function(messages) {
+          socket.emit('display_conversation', {
+            message : messages,
+            id_user : socket.handshake.session.user.id
+          })
+        })
+      }
+    })
+
+    socket.on('send_message', function(data) {
+      var message = require('./Models/chat.js')
+
+      var to = data.to.split(' ')
+
+      if (to.length == 1) {
+
+        message.create_message_with_id_user_and_login(socket.handshake.session.user.id, to, data.message, function(messages) {
+          
+          socket.emit('display_new_message', {
+            class   : 'message-author',
+            content : messages.content,
+            date    : messages.date
+          })
+          socket.to(messages.id_rec).emit('display_new_message_to', {
+            class   : 'message-receiver',
+            content : messages.content,
+            date    : messages.date,
+            from    : socket.handshake.session.user.login
+          })
+          socket.to(messages.id_rec).emit('display_notif', {
+            to      : socket.handshake.session.user.login
+          })
+          notification.create_notif(messages.id_rec, socket.handshake.session.user.id, 4, function(result) {
+            socket.to(messages.id_rec).emit('visit', {message: socket.handshake.session.user.login + " vous a envoyer un message",
+              id_not: result});
+          })
+        })
+      }
+      if (to.length == 2) {
+        message.create_message_with_id_user_and_first_and_last_name(socket.handshake.session.user.id, to[0], to[1], data.message, function(messages) {
+          socket.emit('display_new_message', {
+            class   : 'message-author',
+            content : messages.content,
+            date    : messages.date
+          })
+          socket.to(messages.id_rec).emit('display_new_message_to', {
+            class   : 'message-receiver',
+            content : messages.content,
+            date    : messages.date,
+            from    : socket.handshake.session.user.first_n + ' ' + socket.handshake.session.user.last_n
+          })
+          socket.to(messages.id_rec).emit('display_notif', {
+            to      : socket.handshake.session.user.first_n + ' ' + socket.handshake.session.user.last_n
+          })
+          notification.create_notif(messages.id_rec, socket.handshake.session.user.id, 4, function(result) {
+            socket.to(messages.id_rec).emit('visit', {message: socket.handshake.session.user.login + " vous a envoyé un message",
+              id_not: result});
+          })
+        })
+      }
+    })
   }
   //Whenever someone disconnects this piece of code executed
   socket.on('disconnect', function () {
-    console.log('A user disconnected');
+    var Users = require('./Models/user.js')
+
+    if (socket.handshake.session && socket.handshake.session.user && socket.handshake.session.user.id)
+      Users.active(socket.handshake.session.user.id, 0, function(result) {})
   });
 });    
 

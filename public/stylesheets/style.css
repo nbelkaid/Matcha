@@ -665,6 +665,7 @@ header #header-selector li:hover ul {
     width: 100%;
     height: 100%;
     padding: 20px;
+    overflow: scroll;
 }
 .chat-content ul li {
     display: inline-block;
@@ -712,6 +713,10 @@ header #header-selector li:hover ul {
 .message-author .message-date:last-child,
 .message-receiver .message-date:last-child {
     display: block;
+}
+.new_message {
+    background: rgb(27, 13, 49);
+    color: white;
 }
 
 

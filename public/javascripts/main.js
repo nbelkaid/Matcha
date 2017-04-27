@@ -4,7 +4,7 @@ var socket = io.connect();
 function create_notif(type, data) {
   var div = document.createElement('div');
   var container = document.getElementById('notification')
-  if (type == 1) {
+  if (type == 1  || type == 4) {
     div.className = "alert alert-info one_notif"
   }
   else if (type == 2 || type == 3) {
@@ -43,6 +43,9 @@ socket.on('all_notif', function(data) {
     }
     if (data.notif[i].type == 3) {
       data.notif[i].message = "Félicitations ! Tu as matché avec " + data.notif[i].login
+    }
+    if (data.notif[i].type == 4) {
+      data.notif[i].message = data.notif[i].login + " vous a envoyé un message"
     }
     create_notif(data.notif[i].type, data.notif[i])
   }

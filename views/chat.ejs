@@ -16,7 +16,7 @@
                     <a href="/settings"><i class="fa fa-cog"></i></a>
                 </div>
                 <div class="contact-header-label">
-                    <span>Mat-contact</span>
+                    <span>Mat-Chat</span>
                 </div>
                 <div class="contact-header-home">
                     <a href="/"><i class="fa fa-home"></i></a>
@@ -34,8 +34,8 @@
                 <ul>
                     <% if (locals.contact) { %>
                     <%for(var i = 0; i < locals.contact.length; i++) { %>
-                    <li class="contact-input">
-                        <% if (contact[i].is_active) { %>
+                    <li class="contact-input <%= locals.contact[i].login%>">
+                    	<% if (contact[i].is_active == 1) { %>
                             <i class="fa fa-circle active" aria-hidden="true"></i>
                         <% } else { %>
                             <i class="fa fa-circle-o inactive" aria-hidden="true"></i>
@@ -66,25 +66,6 @@
                 <% } } %>
             </div>
             <div class="chat-content">
-                <ul>
-                    <li class="message-receiver">
-                        <div>
-                            <span class="message-content">Salut Totor ! </span>
-                        </div>
-                    </li>
-                    <li class="message-receiver">
-                        <div>
-                            <span class="message-content">Comment ca va ? </span>
-                            <span class="message-date">17 minutes ago.</span>
-                        </div>
-                    </li>
-                    <li class="message-author">
-                        <div>
-                            <span class="message-content">Salut Amelie ca va et toi ?</span>
-                            <span class="message-date">13 minutes ago.</span>
-                        </div>
-                    </li>
-                </ul>
             </div>
             <div class="chat-send">
                 <form id="send_form" method="post">

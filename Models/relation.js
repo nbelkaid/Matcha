@@ -74,6 +74,12 @@ class relation {
 			cb(result)
 		})
 	}
+	static get_all_match(id, cb) {
+		connection.query("SELECT * FROM `user` JOIN `relation` ON `user`.`id` = `relation`.`user_rec` WHERE `relation`.`user_aut`=? AND `type` = 2", [id], (error, result) => {
+			console.log('wesh', result)
+			cb(result)
+		})
+	}
 	static match_exist(id_1, id_2, cb) {
 		connection.query("SELECT * FROM `relation` WHERE `user_aut`=? AND `user_rec`=? AND `type` = 2", [id_1, id_2], (error, result) => {
 			cb(result)

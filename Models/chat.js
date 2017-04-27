@@ -1,47 +1,254 @@
-var connection = require("../config/db");
-var _ = require("underscore")
+var connect = require('../config/db')
+var moment  = require('moment')
+var _       = require('underscore')
 
-class chat {
-	static create_message(id_aut, id_rec, content, cb) {
+class Messages {
+
+	static get_all_message_with_id_user_and_id_user(id_aut, id_rec, cb) {
+
+		var relation = require('./relation.js')
+		var user     = require('./user.js')
+
+		relation.match_exist(id_user, id_rec, function(relation) {
+
+			if (relation) {
+
+				connect.query('SELECT *  FROM `messages` WHERE id_aut = ? AND id_rec = ? OR id_rec = ? AND id_aut = ?', [id_aut, id_rec, id_user, id_rec], (error, result) => {
+
+					if (error) throw error
+
+					var messages = []
+
+					result.forEach(function(message){
+
+						messages.push({
+							class    : message.id_aut == id_user ? 'message-author' : 'message-receiver',
+							content  : content,
+							date     : moment(date).fromNow()
+						})
+
+					})
+
+					cb(messages)
+				
+				})
+			}
+		})
+
+	}
+
+	static get_all_message_with_id_user_and_first_and_last_name(id_user, first_name, last_name, cb) {
+
+		var relations = require('./relation.js')
+
+		connect.query('SELECT * FROM `user` WHERE first_name = ? AND last_name = ?', [first_name, last_name], (error, to) => {
+
+			if (to && to.length > 0) {
+
+				to.forEach(function(to_result) {
+
+					relation.match_exist(id_user, to_result.id, function(relation) {
+
+						if (relation) {
+
+							connect.query('SELECT id_aut, id_rec, content, date FROM `messages` WHERE id_aut = ? AND id_rec = ? OR id_rec = ? AND id_aut = ?', [id_user, to_result.id, id_user, to_result.id], (error, result) => {
+
+								if (error) throw error
+
+								var messages = []
+
+								result.forEach(function(message){
+
+									messages.push({
+										class    : message.id_aut == id_user ? 'message-author' : 'message-receiver',
+										content  : message.content,
+										date     : moment(message.date).fromNow()
+									})
+
+								})
+								cb(messages)
+
+							})
+
+						}
+
+						else cb(null)
+
+					})
+
+				})
+			}
+
+			else cb(null)
+
+		})
+
+	}
+
+	static get_all_message_with_id_user_and_login(id_user, login, cb) {
+
+		var relation = require('./relation.js')
+		var user     = require('./user.js')
+
+		user.get_user_content(login, function(to) {
+
+			if (to == null) cb(null)
+
+			else {
+
+				relation.match_exist(id_user, to.id, function(relation) {
+
+					if (relation) {
+
+						connect.query('SELECT id_aut, id_rec, content, date FROM `messages` WHERE id_aut = ? AND id_rec = ? OR id_rec = ? AND id_aut = ? ORDER BY `date`', [id_user, to.id, id_user, to.id], (error, result) => {
+
+							if (error) throw error
+
+							var messages = []
+
+							result.forEach(function(message){
+
+								messages.push({
+									class    : message.id_aut == id_user ? 'message-author' : 'message-receiver',
+									content  : message.content,
+									date     : moment(message.date).fromNow()
+								})
+
+							})
+							cb(messages)
+
+						})
+
+					}
+
+					else cb(null)
+
+				})
+			}
+
+		})
+
+	}
+
+	static create_with_id_user_and_id_user(id_aut, id_rec, content, cb) {
+
+		var relation = require('./relation.js')
+		var user = require('./user.js')
+
 		var values = [id_aut, id_rec, content]
-		connection.query("INSERT INTO `messages` (`id_aut`, `id_rec`, `content`) VALUES (?, ?, ?)", values, (error, result) => {
-			if (error) {
-				throw error
-			}
-			if (cb) {
-				cb(result)
-			}
+
+		relation.match_exist(id_aut, id_rec, function(relation) {
+
+			if (relation)
+
+				connect.query("INSERT INTO `messages` (`id_aut`, `id_rec`, `content`) VALUES (?, ?, ?)", values, (error, result) => {
+
+					if (error) throw error
+
+						if (result) {
+							cb({
+								id_aut      : id_aut,
+								id_rec      : id_rec,
+								content     : content,
+								date        : moment().fromNow()
+							})
+						}
+					})
+
 		})
+
 	}
-	static create_notif(id_user, id_aut, type, cb) {
-		var values = [id_user, id_aut, type]
-		connection.query("INSERT INTO `notification` (`id_user`, `id_aut`, `type`) VALUES (?, ?, ?)", values, (error, result) => {
-			if (error) {
-				throw error
+
+	static create_message_with_id_user_and_first_and_last_name(id_aut, first_name, last_name, content, cb) {
+
+		var relations = require('./relation.js')
+
+		connect.query('SELECT * FROM `user` WHERE first_name = ? AND last_name = ?', [first_name, last_name], (error, to) => {
+
+			if (to && to.length > 0) {
+
+				to.forEach(function(to_result) {
+
+					var values = [id_aut, to_result.id, content]
+
+					relations.match_exist(id_aut, to_result.id, function(relation) {
+
+						if (relation) {
+
+							connect.query("INSERT INTO `messages` (`id_aut`, `id_rec`, `content`) VALUES (?, ?, ?)", values, (error, result) => {
+
+								if (error) throw error
+
+									if (result) {
+										cb({
+											id_aut      : id_aut,
+											id_rec      : to_result.id,
+											content     : content,
+											date        : moment().fromNow()
+										})
+									}
+
+								})
+
+						}
+
+						else cb(null)
+
+					})
+
+				})
 			}
-			else if (cb) {
-				cb(result.insertId)
-			}
+
+			else cb(null)
+
 		})
+
 	}
-	static set_notif_read(id_not, cb) {
-		var values = [id_not]
-		connection.query("UPDATE `notification` SET `seen`=1 WHERE `id_not`=?", values, () => {
-			if (cb) {
-				cb(1)
-			}
-		})
+
+	static create_message_with_id_user_and_login(id_aut, login, content, cb) {
+
+		var relation = require('./relation.js')
+		var user = require('./user.js')
+
+		user.get_user_content(login, function(to) {
+
+			if (to == null) cb(null)
+
+				else {
+
+					var values = [id_aut, to.id, content]
+
+					relation.match_exist(id_aut, to.id, function(relation) {
+
+						if (relation) {
+
+							connect.query("INSERT INTO `messages` (`id_aut`, `id_rec`, `content`) VALUES (?, ?, ?)", values, (error, result) => {
+
+								if (error) throw error
+
+									if (result) {
+										console.log('toto', content)
+										cb({
+											id_aut      : id_aut,
+											id_rec      : to.id,
+											content     : content,
+											date        : moment().fromNow()
+										})
+									}
+
+								})
+
+						}
+
+						else cb(null)
+
+					})
+				}
+
+			})
+
 	}
-	static get_all_unread_notif(id_user, cb) {
-		connection.query("SELECT `notification`.*, `user`.`login` FROM `notification` JOIN `user` ON `user`.`id`=`notification`.`id_aut` WHERE `id_user`=? AND `seen`=0 ", [id_user], (error, result) => {
-			if (error) {
-				throw error
-			}
-			if (cb) {
-				cb(result)
-			}
-		})
-	}
+
 }
 
-module.exports = chat;
+module.exports = Messages
