@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <% include head.ejs%>
+</head>
+
+<body>
+    <% include header.ejs %>
+
+ <div id="chat">
+        <div class="contact-div">
+
+            <div class="contact-header">
+                <div class="contact-header-settings">
+                    <a href="/settings"><i class="fa fa-cog"></i></a>
+                </div>
+                <div class="contact-header-label">
+                    <span>Mat-contact</span>
+                </div>
+                <div class="contact-header-home">
+                    <a href="/"><i class="fa fa-home"></i></a>
+                </div>
+            </div>
+            
+            <div class="contact-search">
+                <form id="search_form">
+                    <input type="text" name="search_contact" placeholder="Search" autocomplete="off">
+                    <i class="fa fa-search"></i>
+                </form>
+            </div>
+
+            <div class="contact-list">
+                <ul>
+                    <% if (locals.contact) { %>
+                    <%for(var i = 0; i < locals.contact.length; i++) { %>
+                    <li class="contact-input">
+                        <% if (contact[i].is_active) { %>
+                            <i class="fa fa-circle active" aria-hidden="true"></i>
+                        <% } else { %>
+                            <i class="fa fa-circle-o inactive" aria-hidden="true"></i>
+                        <% } %>
+                        <% if (contact[i].first_name && contact[i].last_name) { %>
+                            <span><%=contact[i].first_name%> <%=contact[i].last_name%></span>
+                        <% } else { %>
+                            <span><%=contact[i].login%></span>
+                        <% } %>
+                    </li>
+                    <% } %>
+                    <% } else { %> 
+                    <li class="no-friend nf">
+                        <span>You haven't friends in Matcha ... </span>
+                        <i class="fa fa-thumbs-o-down" aria-hidden="true"></i>
+                    </li>
+                    <% } %>
+                </ul>
+            </div>
+        </div>
+        <div class="chat-div">
+            <div class="chat-header">
+                <% if (locals.contact) {
+                if (contact[0].first_name && contact[0].last_name) { %>
+                    <span id="chat_name"><%=contact[0].first_name%> <%=contact[0].last_name%></span>
+                <% } else { %>
+                    <span id="chat_name"><%=contact[0].login%></span>
+                <% } } %>
+            </div>
+            <div class="chat-content">
+                <ul>
+                    <li class="message-receiver">
+                        <div>
+                            <span class="message-content">Salut Totor ! </span>
+                        </div>
+                    </li>
+                    <li class="message-receiver">
+                        <div>
+                            <span class="message-content">Comment ca va ? </span>
+                            <span class="message-date">17 minutes ago.</span>
+                        </div>
+                    </li>
+                    <li class="message-author">
+                        <div>
+                            <span class="message-content">Salut Amelie ca va et toi ?</span>
+                            <span class="message-date">13 minutes ago.</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="chat-send">
+                <form id="send_form" method="post">
+                    <input type="text" name="message_sended" placeholder="Type a message..." autocomplete="off" id="send_message">
+                    <a href id="send">
+                        <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
+                    </a>
+                </form>
+            </div>
+        </div>
+	</div>
+
+	<% include script.ejs%>
+</body>
+
+</html>

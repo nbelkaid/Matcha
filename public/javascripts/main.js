@@ -13,7 +13,7 @@ function create_notif(type, data) {
   div.id = data.id_not
   div.onclick = function() {
     this.style.display='none';
-    socket.emit('read_not', {id_not: this.id})
+    socket.emit('read_not', {id_not: data.id_not})
   }
   div.innerHTML = data.message
   container.appendChild(div);
@@ -33,6 +33,7 @@ socket.on('one_read', function() {
 })
 
 socket.on('all_notif', function(data) {
+  document.getElementById('notification').innerHTML = "";
   for (var i = data.notif.length - 1; i >= 0; i--) {
     if (data.notif[i].type == 1) {
       data.notif[i].message = data.notif[i].login + " a visité ton profil"

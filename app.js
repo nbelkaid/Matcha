@@ -195,6 +195,7 @@ var photo = require("./routes/photo")
 var relation = require("./routes/relation")
 var search = require("./routes/search")
 var index = require("./routes/index")
+var chat = require("./routes/chat")
 /**/
 
 // Debut gestion appel
@@ -221,6 +222,7 @@ app.post('/relation1', relation.block)
 app.post('/relation2', relation.button_1_bis)
 
 app.post('/search', search.post)
+app.get('/chat', chat.get)
 //Fin gestion appel
 
 

@@ -34,19 +34,24 @@ class GeoIp {
 	console.log("test_4")
 	request('http://ipinfo.io/geo', function(error, res, body) {
 		console.log("test_5")
-		var location = JSON.parse(body)
-		var values = {
-			city: location.city,
-			country: location.country,
-			zip: location.postal,
-			lat: location.loc.split(",")[0],
-			lng: location.loc.split(",")[1],
-			last_connection: moment().format('YYYY-MM-DD HH:mm:ss')
+		if (body) {
+			var location = JSON.parse(body)
+			var values = {
+				city: location.city,
+				country: location.country,
+				zip: location.postal,
+				lat: location.loc.split(",")[0],
+				lng: location.loc.split(",")[1],
+				last_connection: moment().format('YYYY-MM-DD HH:mm:ss')
+			}
+			console.log(values)
+			connection.query("UPDATE `user` SET ? WHERE `login`=?", [values, login], (error, result) => {
+				cb(location)
+			})
 		}
-		console.log(values)
-		connection.query("UPDATE `user` SET ? WHERE `login`=?", [values, login], (error, result) => {
-			cb(location)
-		})
+		else {
+			cb()
+		}
 	})
 	}
 	static get_geoloc_user(id_user, cb) {
